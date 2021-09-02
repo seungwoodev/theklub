@@ -277,6 +277,7 @@ export function setupMeshProperties(child: any): void
 
 	if (child.material.map !== null)
 	{
+		console.log('no material', child);
 		let mat = new THREE.MeshPhongMaterial();
 		mat.shininess = 0;
 		mat.name = child.material.name;

@@ -104,10 +104,12 @@ export class InputManager implements IUpdatable
 	{
 		if (this.pointerLock)
 		{
+			console.log('onMouseDown with pointerLock');
 			this.domElement.requestPointerLock();
 		}
 		else
 		{
+			console.log('onMouseDown no pointerLock');
 			this.domElement.addEventListener('mousemove', this.boundOnMouseMove, false);
 			this.domElement.addEventListener('mouseup', this.boundOnMouseUp, false);
 		}

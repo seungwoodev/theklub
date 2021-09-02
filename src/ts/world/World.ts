@@ -32,6 +32,7 @@ import { Scenario } from './Scenario';
 import { Sky } from './Sky';
 import { Ocean } from './Ocean';
 import { times } from 'lodash';
+import { Raycaster, Scene, Vector2 } from 'three';
 
 export class World
 {
@@ -64,6 +65,9 @@ export class World
 	public paths: Path[] = [];
 	public scenarioGUIFolder: any;
 	public updatables: IUpdatable[] = [];
+	public raycaster: THREE.Raycaster;
+	public mouse: THREE.Vector2;
+	public SELECTED: any;
 
 	private lastScenarioID: string;
 
@@ -92,6 +96,8 @@ export class World
 		this.renderer.toneMappingExposure = 1.0;
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		// Mouse event renderer setting option
+		this.renderer.setClearColor(0xf0f0f0);
 
 		this.generateHTML();
 
@@ -106,9 +112,55 @@ export class World
 		}
 		window.addEventListener('resize', onWindowResize, false);
 
+		
+
+
 		// Three.js scene
 		this.graphicsWorld = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 1010);
+
+		// Mouse event
+		this.mouse = new THREE.Vector2();
+		console.log('mouse defined', this.mouse);
+		let radius = 100, theta = 0;
+		// let light = new THREE.DirectionalLight(0xffffff, 1);
+		// light.position.set(1, 1, 1).normalize();
+		// this.graphicsWorld.add(light);
+
+		// Mouse move event
+		let onDocumentMouseMove = (event: any): void =>
+		{
+			console.log('onDocumentMouseMove');
+			event.preventDefault();
+			this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+			this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+		}
+
+
+		let onMouseClick = (e: any): void =>
+		{
+			let gap1 = e.clientX - e.offsetX
+			let gap2 = e.clientY - e.offsetY
+		
+			this.mouse.x = ( (e.clientX - gap1)/(window.innerWidth*0.375) )*2 -1;
+			this.mouse.y =  -( (e.clientY-gap2)/(window.innerHeight*0.375) )*2 +1;
+		
+			this.raycaster.setFromCamera(this.mouse, this.camera);
+		
+		}
+
+
+		// // Mouse down event
+		// function onDocumentMouseDown(event): void
+		// {
+		// 	console.log('MouseDown');
+		// 	event.preventDefault();
+		// 	if(this.SELECTED){
+		// 		console.log('mousedown selected', this.SELECTED);
+		// 		this.SELECTED.currentHex = 0x00ff00 * Math.random();
+		// 		this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
+		// 	}
+		// }
 
 		// Passes
 		let renderPass = new RenderPass( this.graphicsWorld, this.camera );
@@ -191,8 +243,42 @@ export class World
 			});
 		}
 
+		
+		
+		let geometry = new THREE.BoxBufferGeometry(10, 10, 10);
+
+		for(let i = 0; i < 10; i++){
+			let grey = Math.random();
+
+			let object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: new THREE.Color(grey, grey, grey)}));
+
+			object.position.x = Math.random() * 80 - 40;
+			object.position.y = Math.random() * 40 + 20;
+			object.position.z = Math.random() * 80 - 40;
+
+			object.rotation.x = Math.random() * 2 * Math.PI;
+			object.rotation.y = Math.random() * 2 * Math.PI;
+			object.rotation.z = Math.random() * 2 * Math.PI;
+
+			object.scale.x = Math.random() + 0.5;
+			object.scale.y = Math.random() + 0.5;
+			object.scale.z = Math.random() + 0.5;
+			this.graphicsWorld.add(object);
+		}
+
+		this.raycaster = new THREE.Raycaster();
+
+		// Mouse event setting option in Canvas
+		document.body.addEventListener('mousemove', onDocumentMouseMove, false);
+		document.body.addEventListener('click', onMouseClick, false);
+		// document.body.addEventListener('mousedown', onDocumentMouseDown, false);
+		
+
 		this.render(this);
 	}
+
+
+	
 
 	// Update
 	// Handles all logic updates.
@@ -276,6 +362,27 @@ export class World
 			world.render(world);
 		});
 
+		// Find intersections
+		this.raycaster.setFromCamera(this.mouse, this.camera);
+		let intersects = this.raycaster.intersectObjects(this.graphicsWorld.children);
+		if(intersects.length > 0){
+			if(this.SELECTED != intersects[0].object){
+				if(this.SELECTED)
+					this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
+				this.SELECTED = intersects[0].object;
+				this.SELECTED.currentHex = this.SELECTED.material.emissive.getHex();
+				this.SELECTED.material.emissive.setHex(0xff0000);
+				document.body.style.cursor = 'pointer';
+			}
+		}
+		else {
+			if(this.SELECTED){
+				this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
+				this.SELECTED = null;
+				document.body.style.cursor = 'auto';
+			}
+		}
+
 		// Getting timeStep
 		let unscaledTimeStep = (this.requestDelta + this.renderDelta + this.logicDelta) ;
 		let timeStep = unscaledTimeStep * this.params.Time_Scale;
@@ -299,6 +406,7 @@ export class World
 		// Actual rendering with a FXAA ON/OFF switch
 		if (this.params.FXAA) this.composer.render();
 		else this.renderer.render(this.graphicsWorld, this.camera);
+		
 
 		// Measuring render time
 		this.renderDelta = this.clock.getDelta();
@@ -359,6 +467,9 @@ export class World
 						this.registerUpdatable(new Ocean(child, this));
 					}
 					
+				}
+				if(child.name.includes('test')){
+					console.log('hanok', child);
 				}
 
 				if (child.userData.hasOwnProperty('data'))
