@@ -313,16 +313,16 @@ export class World
 			}
 		});
 
-		this.vehicles.forEach((vehicle) => {
-			if (this.isOutOfBounds(vehicle.rayCastVehicle.chassisBody.position))
-			{
-				console.log('vehicle out of Bounds', vehicle.rayCastVehicle.chassisBody.position);
-				let worldPos = new THREE.Vector3();
-				vehicle.spawnPoint.getWorldPosition(worldPos);
-				worldPos.y += 1;
-				this.outOfBoundsRespawn(vehicle.rayCastVehicle.chassisBody, Utils.cannonVector(worldPos));
-			}
-		});
+		// this.vehicles.forEach((vehicle) => {
+		// 	if (this.isOutOfBounds(vehicle.rayCastVehicle.chassisBody.position))
+		// 	{
+		// 		console.log('vehicle out of Bounds', vehicle.rayCastVehicle.chassisBody.position);
+		// 		let worldPos = new THREE.Vector3();
+		// 		vehicle.spawnPoint.getWorldPosition(worldPos);
+		// 		worldPos.y += 1;
+		// 		this.outOfBoundsRespawn(vehicle.rayCastVehicle.chassisBody, Utils.cannonVector(worldPos));
+		// 	}
+		// });
 	}
 
 	public isOutOfBounds(position: CANNON.Vec3): boolean
