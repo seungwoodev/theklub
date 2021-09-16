@@ -31,7 +31,7 @@ import { Vehicle } from '../vehicles/Vehicle';
 import { Scenario } from './Scenario';
 import { Sky } from './Sky';
 import { Ocean } from './Ocean';
-import { times } from 'lodash';
+import { forEach, times } from 'lodash';
 import { Raycaster, Scene, Vector2 } from 'three';
 import { NewCollider } from '../physics/colliders/NewCollider';
 
@@ -157,25 +157,29 @@ export class World
 			let gap1 = e.clientX - e.offsetX
 			let gap2 = e.clientY - e.offsetY
 		
-			this.mouse.x = ( (e.clientX - gap1)/(window.innerWidth*0.375) )*2 -1;
-			this.mouse.y =  -( (e.clientY-gap2)/(window.innerHeight*0.375) )*2 +1;
+			this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+			this.mouse.y = - (e.clientY / window.innerHeight) * 2 + 1;
 		
 			this.raycaster.setFromCamera(this.mouse, this.camera);
+
+			let intersects = this.raycaster.intersectObjects(this.marks);
+
+			let mark_name
+
+			if(intersects.length > 0){
+				this.marks.forEach(mark => {
+					if(mark == intersects[0].object && mark == this.SELECTED){
+						mark_name = mark.name
+					}
+				})
+				let url = 'https://www.google.com/search?q=' + mark_name;
+				window.open(url,'_blank');
+			}
+
+
 		
 		}
 
-
-		// // Mouse down event
-		// function onDocumentMouseDown(event): void
-		// {
-		// 	console.log('MouseDown');
-		// 	event.preventDefault();
-		// 	if(this.SELECTED){
-		// 		console.log('mousedown selected', this.SELECTED);
-		// 		this.SELECTED.currentHex = 0x00ff00 * Math.random();
-		// 		this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
-		// 	}
-		// }
 
 		// Passes
 		let renderPass = new RenderPass( this.graphicsWorld, this.camera );
@@ -267,7 +271,6 @@ export class World
 		// Mouse event setting option in Canvas
 		document.body.addEventListener('mousemove', onDocumentMouseMove, false);
 		document.body.addEventListener('click', onMouseClick, false);
-		// document.body.addEventListener('mousedown', onDocumentMouseDown, false);
 		
 
 		this.render(this);
@@ -360,22 +363,22 @@ export class World
 
 		// Find intersections
 		this.raycaster.setFromCamera(this.mouse, this.camera);
-		let intersects = this.raycaster.intersectObjects(this.graphicsWorld.children);
+		let intersects = this.raycaster.intersectObjects(this.marks);
 		if(intersects.length > 0){
 			if(this.SELECTED != intersects[0].object){
 				if(this.SELECTED)
-					// this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
+					this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
 				this.SELECTED = intersects[0].object;
-				// this.SELECTED.currentHex = this.SELECTED.material.emissive.getHex();
-				// this.SELECTED.material.emissive.setHex(0xff0000);
+				this.SELECTED.currentHex = this.SELECTED.material.emissive.getHex();
+				this.SELECTED.material.emissive.setHex(0xff0000);
 				document.body.style.cursor = 'pointer';
 			}
 		}
 		else {
 			if(this.SELECTED){
-				// this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
+				this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
 				this.SELECTED = null;
-				document.body.style.cursor = 'auto';
+				document.body.style.cursor = 'default';
 			}
 		}
 
@@ -400,18 +403,8 @@ export class World
 		this.stats.begin();
 
 		// Rotate Marks
-		this.mark1.rotation.y -= 0.01;
-		this.mark2.rotation.y -= 0.01;
-		this.mark3.rotation.y -= 0.01;
-		this.mark4.rotation.y -= 0.01;
-		this.mark5.rotation.y -= 0.01;
-		this.mark6.rotation.y -= 0.01;
-		this.mark7.rotation.y -= 0.01;
-		this.mark8.rotation.y -= 0.01;
-		this.mark9.rotation.y -= 0.01;
-
+		this.marks.forEach(mark => mark.rotation.y -= 0.01)
 		
-
 		// Actual rendering with a FXAA ON/OFF switch
 		if (this.params.FXAA) this.composer.render();
 		else this.renderer.render(this.graphicsWorld, this.camera);
@@ -452,6 +445,7 @@ export class World
 
 	public loadScene(loadingManager: LoadingManager, gltf: any): void
 	{
+		this.marks = [];
 		var i = 0;
 		gltf.scene.traverse((child) => {
 			i++;
@@ -488,63 +482,81 @@ export class World
 						this.mark1.position.x = child.position.x
 						this.mark1.position.y = child.position.y + 4
 						this.mark1.position.z = child.position.z
+						this.mark1.name = 'Pocha1'
 						this.graphicsWorld.add(this.mark1);
+						this.marks.push(this.mark1);
 					}
 					if(child.name == 'RoastChicken'){
 						this.mark2 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark2.position.x = child.position.x
 						this.mark2.position.y = child.position.y + 3
 						this.mark2.position.z = child.position.z
+						this.mark2.name = 'RoastChicken'
 						this.graphicsWorld.add(this.mark2);
+						this.marks.push(this.mark2);
 					}
 					if(child.name == 'SnackBar'){
 						this.mark3 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark3.position.x = child.position.x
 						this.mark3.position.y = child.position.y + 2.7
 						this.mark3.position.z = child.position.z
+						this.mark3.name = 'SnackBar'
 						this.graphicsWorld.add(this.mark3);
+						this.marks.push(this.mark3);
 					}
 					if(child.name == 'gugbabjib'){
 						this.mark4 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark4.position.x = child.position.x
 						this.mark4.position.y = child.position.y + 2.5
 						this.mark4.position.z = child.position.z + 2
+						this.mark4.name = 'gugbabjib'
 						this.graphicsWorld.add(this.mark4);
+						this.marks.push(this.mark4);
 					}
 					if(child.name == 'Pocha2'){
 						this.mark5 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark5.position.x = child.position.x
 						this.mark5.position.y = child.position.y + 2
 						this.mark5.position.z = child.position.z
+						this.mark5.name = 'Pocha2'
 						this.graphicsWorld.add(this.mark5);
+						this.marks.push(this.mark5);
 					}
 					if(child.name == 'jibbab'){
 						this.mark6 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark6.position.x = child.position.x - 1
 						this.mark6.position.y = child.position.y + 3
 						this.mark6.position.z = child.position.z + 3
+						this.mark6.name = 'jibbab'
 						this.graphicsWorld.add(this.mark6);
+						this.marks.push(this.mark6);
 					}
 					if(child.name == 'hanok'){
 						this.mark7 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark7.position.x = child.position.x
 						this.mark7.position.y = child.position.y + 3
 						this.mark7.position.z = child.position.z
+						this.mark7.name = 'hanok'
 						this.graphicsWorld.add(this.mark7);
+						this.marks.push(this.mark7);
 					}
 					if(child.name == 'jumag'){
 						this.mark8 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark8.position.x = child.position.x
 						this.mark8.position.y = child.position.y + 2.2
 						this.mark8.position.z = child.position.z + 2
+						this.mark8.name = 'jumag'
 						this.graphicsWorld.add(this.mark8);
+						this.marks.push(this.mark8);
 					}
 					if(child.name == 'gyeonghoelu'){
 						this.mark9 = new THREE.Mesh(MarkGeometry, MarkMaterial);
 						this.mark9.position.x = child.position.x + 1
 						this.mark9.position.y = child.position.y + 1.2
 						this.mark9.position.z = child.position.z
+						this.mark9.name = 'gyeonghoelu'
 						this.graphicsWorld.add(this.mark9);
+						this.marks.push(this.mark9);
 					}
 					
 					// this.graphicsWorld.add(mark);
@@ -554,25 +566,6 @@ export class World
 				});
 				
 			}
-
-			// 삼계탕
-
-			// 맛나분식
-
-			// 태평국밥
-
-			// 포차2(의자)
-			
-
-			// 한옥(가운데)
-			
-
-			// 집밥(아파트 큰거)
-			
-
-			// 주막
-			
-			// 경회루
 
 			if (child.hasOwnProperty('userData'))
 			{
@@ -650,6 +643,8 @@ export class World
 		console.log('number', i);
 
 		this.graphicsWorld.add(gltf.scene);
+
+		this.marks.forEach(mark => mark.geometry.computeBoundingSphere());
 
 		// Launch default scenario
 		let defaultScenarioID: string;
