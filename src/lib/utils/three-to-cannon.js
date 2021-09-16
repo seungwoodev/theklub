@@ -31,7 +31,9 @@ export const threeToCannon = function (object, options) {
   } else if (options.type === Type.HULL) {
     return createConvexPolyhedron(object);
   } else if (options.type === Type.MESH) {
+    console.log('getGeometry start')
     geometry = getGeometry(object);
+    console.log('getGeometry fin')
     return geometry ? createTrimeshShape(geometry) : null;
   } else if (options.type) {
     throw new Error('[CANNON.threeToCannon] Invalid type "%s".', options.type);
@@ -273,12 +275,14 @@ function createBoundingSphereShape (object, options) {
  * @return {CANNON.Shape}
  */
 function createTrimeshShape (geometry) {
+  console.log('createTrimeshShape start');
   var indices,
       vertices = getVertices(geometry);
 
   if (!vertices.length) return null;
 
   indices = Object.keys(vertices).map(Number);
+  console.log('createTrimeshShape fin');
   return new CANNON.Trimesh(vertices, indices);
 }
 

@@ -33,6 +33,7 @@ import { Sky } from './Sky';
 import { Ocean } from './Ocean';
 import { times } from 'lodash';
 import { Raycaster, Scene, Vector2 } from 'three';
+import { NewCollider } from '../physics/colliders/NewCollider';
 
 export class World
 {
@@ -130,7 +131,7 @@ export class World
 		// Mouse move event
 		let onDocumentMouseMove = (event: any): void =>
 		{
-			console.log('onDocumentMouseMove');
+			// console.log('onDocumentMouseMove');
 			event.preventDefault();
 			this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 			this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
@@ -245,26 +246,26 @@ export class World
 
 		
 		
-		let geometry = new THREE.BoxBufferGeometry(10, 10, 10);
+		// let geometry = new THREE.BoxBufferGeometry(10, 10, 10);
 
-		for(let i = 0; i < 10; i++){
-			let grey = Math.random();
+		// for(let i = 0; i < 10; i++){
+		// 	let grey = Math.random();
 
-			let object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: new THREE.Color(grey, grey, grey)}));
+		// 	let object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: new THREE.Color(grey, grey, grey)}));
 
-			object.position.x = Math.random() * 80 - 40;
-			object.position.y = Math.random() * 40 + 20;
-			object.position.z = Math.random() * 80 - 40;
+		// 	object.position.x = Math.random() * 80 - 40;
+		// 	object.position.y = Math.random() * 40 + 20;
+		// 	object.position.z = Math.random() * 80 - 40;
 
-			object.rotation.x = Math.random() * 2 * Math.PI;
-			object.rotation.y = Math.random() * 2 * Math.PI;
-			object.rotation.z = Math.random() * 2 * Math.PI;
+		// 	object.rotation.x = Math.random() * 2 * Math.PI;
+		// 	object.rotation.y = Math.random() * 2 * Math.PI;
+		// 	object.rotation.z = Math.random() * 2 * Math.PI;
 
-			object.scale.x = Math.random() + 0.5;
-			object.scale.y = Math.random() + 0.5;
-			object.scale.z = Math.random() + 0.5;
-			this.graphicsWorld.add(object);
-		}
+		// 	object.scale.x = Math.random() + 0.5;
+		// 	object.scale.y = Math.random() + 0.5;
+		// 	object.scale.z = Math.random() + 0.5;
+		// 	this.graphicsWorld.add(object);
+		// }
 
 		this.raycaster = new THREE.Raycaster();
 
@@ -312,16 +313,16 @@ export class World
 			}
 		});
 
-		this.vehicles.forEach((vehicle) => {
-			if (this.isOutOfBounds(vehicle.rayCastVehicle.chassisBody.position))
-			{
-				console.log('vehicle out of Bounds', vehicle.rayCastVehicle.chassisBody.position);
-				let worldPos = new THREE.Vector3();
-				vehicle.spawnPoint.getWorldPosition(worldPos);
-				worldPos.y += 1;
-				this.outOfBoundsRespawn(vehicle.rayCastVehicle.chassisBody, Utils.cannonVector(worldPos));
-			}
-		});
+		// this.vehicles.forEach((vehicle) => {
+		// 	if (this.isOutOfBounds(vehicle.rayCastVehicle.chassisBody.position))
+		// 	{
+		// 		console.log('vehicle out of Bounds', vehicle.rayCastVehicle.chassisBody.position);
+		// 		let worldPos = new THREE.Vector3();
+		// 		vehicle.spawnPoint.getWorldPosition(worldPos);
+		// 		worldPos.y += 1;
+		// 		this.outOfBoundsRespawn(vehicle.rayCastVehicle.chassisBody, Utils.cannonVector(worldPos));
+		// 	}
+		// });
 	}
 
 	public isOutOfBounds(position: CANNON.Vec3): boolean
@@ -368,16 +369,16 @@ export class World
 		if(intersects.length > 0){
 			if(this.SELECTED != intersects[0].object){
 				if(this.SELECTED)
-					this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
+					// this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
 				this.SELECTED = intersects[0].object;
-				this.SELECTED.currentHex = this.SELECTED.material.emissive.getHex();
-				this.SELECTED.material.emissive.setHex(0xff0000);
+				// this.SELECTED.currentHex = this.SELECTED.material.emissive.getHex();
+				// this.SELECTED.material.emissive.setHex(0xff0000);
 				document.body.style.cursor = 'pointer';
 			}
 		}
 		else {
 			if(this.SELECTED){
-				this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
+				// this.SELECTED.material.emissive.setHex(this.SELECTED.currentHex);
 				this.SELECTED = null;
 				document.body.style.cursor = 'auto';
 			}
@@ -448,17 +449,8 @@ export class World
 			i++;
 			if (child.hasOwnProperty('userData'))
 			{
-				if(child.name.includes('sc5')){
-					console.log('a', child);
-				}
 				if (child.type === 'Mesh')
 				{
-					if(child.name.includes('sc5')){
-						console.log('b', child);
-					}
-					// if(child.name == 'sc6'){
-					// 	console.log("child mesh", child);
-					// }
 					Utils.setupMeshProperties(child);
 					this.sky.csm.setupMaterial(child.material);
 
@@ -467,9 +459,6 @@ export class World
 						this.registerUpdatable(new Ocean(child, this));
 					}
 					
-				}
-				if(child.name.includes('test')){
-					console.log('hanok', child);
 				}
 
 				if (child.userData.hasOwnProperty('data'))
@@ -484,9 +473,6 @@ export class World
 							// Convex doesn't work! Stick to boxes!
 							if (child.userData.type === 'box')
 							{
-								if(child.name.includes('010')){
-									console.log('c', child);
-								}
 								let phys = new BoxCollider({size: new THREE.Vector3(child.scale.x, child.scale.y, child.scale.z)});
 								phys.body.position.copy(Utils.cannonVector(child.position));
 								phys.body.quaternion.copy(Utils.cannonQuat(child.quaternion));
@@ -504,14 +490,9 @@ export class World
 								this.physicsWorld.addBody(phys.body);
 							}
 
-							child.visible = false;
+							// child.visible = false;
 						}
 					}
-
-					// else{
-					// 	console.log('no physics, path, scenario', child);
-					// }
-
 					if (child.userData.data === 'path')
 					{
 						this.paths.push(new Path(child));
@@ -523,6 +504,17 @@ export class World
 					}
 
 				}
+				// else if (child.type != 'Scene' && child.type != 'Object3D' && !child.name.includes('Path') && !child.name.includes('path'))
+				// {
+				// 	// if no property of data, then just make it trimesh
+				// 	let phys = new TrimeshCollider(child, {});
+				// 	this.physicsWorld.addBody(phys.body);
+				// }
+				// else if(child.type === 'Object3D')
+				// {
+				// 	let phys = new TrimeshCollider(child, {});
+				// 	this.physicsWorld.addBody(phys.body);
+				// }
 			}
 			else{
 				console.log('no userData', child);

@@ -126,6 +126,7 @@ export class InputManager implements IUpdatable
 		{
 			this.inputReceiver.handleMouseMove(event, event.movementX, event.movementY);
 		}
+		// console.log('onMouseMove');
 	}
 
 	public onMouseUp(event: MouseEvent): void
