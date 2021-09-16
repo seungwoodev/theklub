@@ -70,6 +70,18 @@ export class World
 	public mouse: THREE.Vector2;
 	public SELECTED: any;
 
+	public mark1: THREE.Mesh;
+	public mark2: THREE.Mesh;
+	public mark3: THREE.Mesh;
+	public mark4: THREE.Mesh;
+	public mark5: THREE.Mesh;
+	public mark6: THREE.Mesh;
+	public mark7: THREE.Mesh;
+	public mark8: THREE.Mesh;
+	public mark9: THREE.Mesh;
+
+	public marks: THREE.Mesh[];
+
 	private lastScenarioID: string;
 
 	constructor(worldScenePath?: any)
@@ -140,6 +152,8 @@ export class World
 
 		let onMouseClick = (e: any): void =>
 		{
+			console.log('mouse clicked')
+
 			let gap1 = e.clientX - e.offsetX
 			let gap2 = e.clientY - e.offsetY
 		
@@ -246,26 +260,7 @@ export class World
 
 		
 		
-		// let geometry = new THREE.BoxBufferGeometry(10, 10, 10);
-
-		// for(let i = 0; i < 10; i++){
-		// 	let grey = Math.random();
-
-		// 	let object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: new THREE.Color(grey, grey, grey)}));
-
-		// 	object.position.x = Math.random() * 80 - 40;
-		// 	object.position.y = Math.random() * 40 + 20;
-		// 	object.position.z = Math.random() * 80 - 40;
-
-		// 	object.rotation.x = Math.random() * 2 * Math.PI;
-		// 	object.rotation.y = Math.random() * 2 * Math.PI;
-		// 	object.rotation.z = Math.random() * 2 * Math.PI;
-
-		// 	object.scale.x = Math.random() + 0.5;
-		// 	object.scale.y = Math.random() + 0.5;
-		// 	object.scale.z = Math.random() + 0.5;
-		// 	this.graphicsWorld.add(object);
-		// }
+		
 
 		this.raycaster = new THREE.Raycaster();
 
@@ -313,16 +308,16 @@ export class World
 			}
 		});
 
-		// this.vehicles.forEach((vehicle) => {
-		// 	if (this.isOutOfBounds(vehicle.rayCastVehicle.chassisBody.position))
-		// 	{
-		// 		console.log('vehicle out of Bounds', vehicle.rayCastVehicle.chassisBody.position);
-		// 		let worldPos = new THREE.Vector3();
-		// 		vehicle.spawnPoint.getWorldPosition(worldPos);
-		// 		worldPos.y += 1;
-		// 		this.outOfBoundsRespawn(vehicle.rayCastVehicle.chassisBody, Utils.cannonVector(worldPos));
-		// 	}
-		// });
+		this.vehicles.forEach((vehicle) => {
+			if (this.isOutOfBounds(vehicle.rayCastVehicle.chassisBody.position))
+			{
+				console.log('vehicle out of Bounds', vehicle.rayCastVehicle.chassisBody.position);
+				let worldPos = new THREE.Vector3();
+				vehicle.spawnPoint.getWorldPosition(worldPos);
+				worldPos.y += 1;
+				this.outOfBoundsRespawn(vehicle.rayCastVehicle.chassisBody, Utils.cannonVector(worldPos));
+			}
+		});
 	}
 
 	public isOutOfBounds(position: CANNON.Vec3): boolean
@@ -404,6 +399,19 @@ export class World
 		this.stats.end();
 		this.stats.begin();
 
+		// Rotate Marks
+		this.mark1.rotation.y -= 0.01;
+		this.mark2.rotation.y -= 0.01;
+		this.mark3.rotation.y -= 0.01;
+		this.mark4.rotation.y -= 0.01;
+		this.mark5.rotation.y -= 0.01;
+		this.mark6.rotation.y -= 0.01;
+		this.mark7.rotation.y -= 0.01;
+		this.mark8.rotation.y -= 0.01;
+		this.mark9.rotation.y -= 0.01;
+
+		
+
 		// Actual rendering with a FXAA ON/OFF switch
 		if (this.params.FXAA) this.composer.render();
 		else this.renderer.render(this.graphicsWorld, this.camera);
@@ -447,6 +455,125 @@ export class World
 		var i = 0;
 		gltf.scene.traverse((child) => {
 			i++;
+			if(child.name == 'Pocha1' || child.name == 'RoastChicken' || child.name == 'SnackBar' || child.name == 'gugbabjib'
+			 || child.name == 'Pocha2' || child.name == 'hanok' || child.name == 'jibbab' || child.name == 'jumag'
+			  || child.name == 'gyeonghoelu'){
+
+				const loader = new THREE.FontLoader();
+				console.log('parent file: ', require('path').resolve(__dirname));
+
+				loader.load(require('path').resolve(__dirname,'/fonts/helvetiker_regular.typeface.json'), (font) => {
+					const text = '?';  
+
+					const MarkGeometry = new THREE.TextGeometry(text, {
+					font: font,
+					size: 1,  
+
+					height: 0.05,  
+
+					curveSegments: 12,  
+
+					bevelEnabled: true,  
+					bevelThickness: 0.15,  
+
+					bevelSize: 0.1,  
+
+					bevelSegments: 5,  
+
+					});
+					const MarkMaterial = new THREE.MeshPhongMaterial({ color: 0x97df5e });
+					// let Mark = new THREE.Mesh(MarkGeometry, MarkMaterial);
+					if(child.name == 'Pocha1'){
+						this.mark1 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark1.position.x = child.position.x
+						this.mark1.position.y = child.position.y + 4
+						this.mark1.position.z = child.position.z
+						this.graphicsWorld.add(this.mark1);
+					}
+					if(child.name == 'RoastChicken'){
+						this.mark2 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark2.position.x = child.position.x
+						this.mark2.position.y = child.position.y + 3
+						this.mark2.position.z = child.position.z
+						this.graphicsWorld.add(this.mark2);
+					}
+					if(child.name == 'SnackBar'){
+						this.mark3 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark3.position.x = child.position.x
+						this.mark3.position.y = child.position.y + 2.7
+						this.mark3.position.z = child.position.z
+						this.graphicsWorld.add(this.mark3);
+					}
+					if(child.name == 'gugbabjib'){
+						this.mark4 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark4.position.x = child.position.x
+						this.mark4.position.y = child.position.y + 2.5
+						this.mark4.position.z = child.position.z + 2
+						this.graphicsWorld.add(this.mark4);
+					}
+					if(child.name == 'Pocha2'){
+						this.mark5 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark5.position.x = child.position.x
+						this.mark5.position.y = child.position.y + 2
+						this.mark5.position.z = child.position.z
+						this.graphicsWorld.add(this.mark5);
+					}
+					if(child.name == 'jibbab'){
+						this.mark6 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark6.position.x = child.position.x - 1
+						this.mark6.position.y = child.position.y + 3
+						this.mark6.position.z = child.position.z + 3
+						this.graphicsWorld.add(this.mark6);
+					}
+					if(child.name == 'hanok'){
+						this.mark7 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark7.position.x = child.position.x
+						this.mark7.position.y = child.position.y + 3
+						this.mark7.position.z = child.position.z
+						this.graphicsWorld.add(this.mark7);
+					}
+					if(child.name == 'jumag'){
+						this.mark8 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark8.position.x = child.position.x
+						this.mark8.position.y = child.position.y + 2.2
+						this.mark8.position.z = child.position.z + 2
+						this.graphicsWorld.add(this.mark8);
+					}
+					if(child.name == 'gyeonghoelu'){
+						this.mark9 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark9.position.x = child.position.x + 1
+						this.mark9.position.y = child.position.y + 1.2
+						this.mark9.position.z = child.position.z
+						this.graphicsWorld.add(this.mark9);
+					}
+					
+					// this.graphicsWorld.add(mark);
+					console.log('Added mark of ', child);
+					// console.log('mark is', Mark);
+
+				});
+				
+			}
+
+			// 삼계탕
+
+			// 맛나분식
+
+			// 태평국밥
+
+			// 포차2(의자)
+			
+
+			// 한옥(가운데)
+			
+
+			// 집밥(아파트 큰거)
+			
+
+			// 주막
+			
+			// 경회루
+
 			if (child.hasOwnProperty('userData'))
 			{
 				if (child.type === 'Mesh')
