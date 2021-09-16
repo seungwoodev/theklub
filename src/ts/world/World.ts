@@ -246,26 +246,26 @@ export class World
 
 		
 		
-		let geometry = new THREE.BoxBufferGeometry(10, 10, 10);
+		// let geometry = new THREE.BoxBufferGeometry(10, 10, 10);
 
-		for(let i = 0; i < 10; i++){
-			let grey = Math.random();
+		// for(let i = 0; i < 10; i++){
+		// 	let grey = Math.random();
 
-			let object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: new THREE.Color(grey, grey, grey)}));
+		// 	let object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: new THREE.Color(grey, grey, grey)}));
 
-			object.position.x = Math.random() * 80 - 40;
-			object.position.y = Math.random() * 40 + 20;
-			object.position.z = Math.random() * 80 - 40;
+		// 	object.position.x = Math.random() * 80 - 40;
+		// 	object.position.y = Math.random() * 40 + 20;
+		// 	object.position.z = Math.random() * 80 - 40;
 
-			object.rotation.x = Math.random() * 2 * Math.PI;
-			object.rotation.y = Math.random() * 2 * Math.PI;
-			object.rotation.z = Math.random() * 2 * Math.PI;
+		// 	object.rotation.x = Math.random() * 2 * Math.PI;
+		// 	object.rotation.y = Math.random() * 2 * Math.PI;
+		// 	object.rotation.z = Math.random() * 2 * Math.PI;
 
-			object.scale.x = Math.random() + 0.5;
-			object.scale.y = Math.random() + 0.5;
-			object.scale.z = Math.random() + 0.5;
-			this.graphicsWorld.add(object);
-		}
+		// 	object.scale.x = Math.random() + 0.5;
+		// 	object.scale.y = Math.random() + 0.5;
+		// 	object.scale.z = Math.random() + 0.5;
+		// 	this.graphicsWorld.add(object);
+		// }
 
 		this.raycaster = new THREE.Raycaster();
 
