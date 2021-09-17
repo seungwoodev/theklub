@@ -1,8 +1,7 @@
 # The Klub
-* metaverse platform
+* Metaverse 3D web platform where you can experience Korean culture
 
 ## usage
-
 * download or clone the project
 * $ npm i
 * $ npm run dev
@@ -10,17 +9,17 @@
 
 ## development environment
 
-1. Programming Languages
+### Programming Languages
 
-* Javascipt & Typesciprt (ES5)
+* Javascript & Typescript (ES5)
 
-2. Packages & Libraries
+### Packages & Libraries
 
 * NPM
 * Three.js
 * Cannon.js
 * WebGL
 
-3. Design Tools
+### Design Tools
 
 * Blender
