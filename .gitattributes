@@ -1,3 +1,5 @@
 build/assets/world.glb filter=lfs diff=lfs merge=lfs -text
 src/blend/world.blend filter=lfs diff=lfs merge=lfs -text
 src/blend/world.blend1 filter=lfs diff=lfs merge=lfs -text
+build/assets/boxman.glb filter=lfs diff=lfs merge=lfs -text
+build/assets/stage.glb filter=lfs diff=lfs merge=lfs -text
