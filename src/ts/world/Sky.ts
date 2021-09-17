@@ -90,7 +90,7 @@ export class Sky extends THREE.Object3D implements IUpdatable
 		this.csm = new CSM({
 			fov: 80,
 			far: 250,	// maxFar
-			lightIntensity: 1,
+			lightIntensity: 2.5,
 			cascades: 3,
 			shadowMapSize: 2048,
 			camera: world.camera,
