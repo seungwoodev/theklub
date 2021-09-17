@@ -70,6 +70,7 @@ export class World
 	public mouse: THREE.Vector2;
 	public SELECTED: any;
 
+	// Nayeon's
 	public mark1: THREE.Mesh;
 	public mark2: THREE.Mesh;
 	public mark3: THREE.Mesh;
@@ -80,7 +81,29 @@ export class World
 	public mark8: THREE.Mesh;
 	public mark9: THREE.Mesh;
 
+	// Chanyeong's
+	public mark10: THREE.Mesh;
+	public mark11: THREE.Mesh;
+	public mark12: THREE.Mesh;
+	public mark13: THREE.Mesh;
+	public mark14: THREE.Mesh;
+	public info10: THREE.Mesh;
+	public info11: THREE.Mesh;
+	public info12: THREE.Mesh;
+	public info13: THREE.Mesh;
+	public info14: THREE.Mesh;
+
 	public marks: THREE.Mesh[];
+
+	public infos: THREE.Mesh[];
+
+	public raycasterList: THREE.Mesh[];
+
+	public removeEntity(objectName) {
+		var selectedObject = this.graphicsWorld.getObjectByName(objectName);
+		this.graphicsWorld.remove( selectedObject );
+	}
+
 
 	private lastScenarioID: string;
 
@@ -162,18 +185,29 @@ export class World
 		
 			this.raycaster.setFromCamera(this.mouse, this.camera);
 
-			let intersects = this.raycaster.intersectObjects(this.marks);
+			let intersects = this.raycaster.intersectObjects(this.raycasterList);
 
-			let mark_name
+			let mesh_name
 
 			if(intersects.length > 0){
-				this.marks.forEach(mark => {
-					if(mark == intersects[0].object && mark == this.SELECTED){
-						mark_name = mark.name
+				this.raycasterList.forEach( mesh => {
+					if(mesh == intersects[0].object && mesh == this.SELECTED){
+						mesh_name = mesh.name
 					}
 				})
-				let url = 'https://www.google.com/search?q=' + mark_name;
-				window.open(url,'_blank');
+				if(mesh_name == 'bexco'){
+					
+					this.graphicsWorld.add(this.info14)
+				}
+				if(mesh_name == 'bexcoInfo'){
+					this.removeEntity('bexcoInfo')
+					let url = 'https://www.bexco.co.kr/kor/Main.do'
+					window.open(url,'_blank');
+				}
+				else{
+					let url = 'https://www.google.com/search?q=' + mesh_name;
+					window.open(url,'_blank');
+				}
 			}
 
 
@@ -363,7 +397,7 @@ export class World
 
 		// Find intersections
 		this.raycaster.setFromCamera(this.mouse, this.camera);
-		let intersects = this.raycaster.intersectObjects(this.marks);
+		let intersects = this.raycaster.intersectObjects(this.raycasterList);
 		if(intersects.length > 0){
 			if(this.SELECTED != intersects[0].object){
 				if(this.SELECTED)
@@ -446,20 +480,23 @@ export class World
 	public loadScene(loadingManager: LoadingManager, gltf: any): void
 	{
 		this.marks = [];
+		this.infos = [];
+		this.raycasterList = [];
 		var i = 0;
 		gltf.scene.traverse((child) => {
 			i++;
 			if(child.name == 'Pocha1' || child.name == 'RoastChicken' || child.name == 'SnackBar' || child.name == 'gugbabjib'
 			 || child.name == 'Pocha2' || child.name == 'hanok' || child.name == 'jibbab' || child.name == 'jumag'
-			  || child.name == 'gyeonghoelu'){
+			  || child.name == 'gyeonghoelu' || child.name == 'cheomseongdae' || child.name == 'yesul' || child.name == 'biff'
+			  || child.name == 'jagalchi' || child.name == 'bexco'){
 
 				const loader = new THREE.FontLoader();
 				console.log('parent file: ', require('path').resolve(__dirname));
 
 				loader.load(require('path').resolve(__dirname,'/fonts/helvetiker_regular.typeface.json'), (font) => {
-					const text = '?';  
+					const markText = '?';  
 
-					const MarkGeometry = new THREE.TextGeometry(text, {
+					const MarkGeometry = new THREE.TextGeometry(markText, {
 					font: font,
 					size: 1,  
 
@@ -475,7 +512,10 @@ export class World
 					bevelSegments: 5,  
 
 					});
+
 					const MarkMaterial = new THREE.MeshPhongMaterial({ color: 0x97df5e });
+
+
 					// let Mark = new THREE.Mesh(MarkGeometry, MarkMaterial);
 					if(child.name == 'Pocha1'){
 						this.mark1 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -485,6 +525,7 @@ export class World
 						this.mark1.name = 'Pocha1'
 						this.graphicsWorld.add(this.mark1);
 						this.marks.push(this.mark1);
+						this.raycasterList.push(this.mark1)
 					}
 					if(child.name == 'RoastChicken'){
 						this.mark2 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -494,6 +535,7 @@ export class World
 						this.mark2.name = 'RoastChicken'
 						this.graphicsWorld.add(this.mark2);
 						this.marks.push(this.mark2);
+						this.raycasterList.push(this.mark2)
 					}
 					if(child.name == 'SnackBar'){
 						this.mark3 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -503,6 +545,7 @@ export class World
 						this.mark3.name = 'SnackBar'
 						this.graphicsWorld.add(this.mark3);
 						this.marks.push(this.mark3);
+						this.raycasterList.push(this.mark3)
 					}
 					if(child.name == 'gugbabjib'){
 						this.mark4 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -512,6 +555,7 @@ export class World
 						this.mark4.name = 'gugbabjib'
 						this.graphicsWorld.add(this.mark4);
 						this.marks.push(this.mark4);
+						this.raycasterList.push(this.mark4)
 					}
 					if(child.name == 'Pocha2'){
 						this.mark5 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -521,6 +565,7 @@ export class World
 						this.mark5.name = 'Pocha2'
 						this.graphicsWorld.add(this.mark5);
 						this.marks.push(this.mark5);
+						this.raycasterList.push(this.mark5)
 					}
 					if(child.name == 'jibbab'){
 						this.mark6 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -530,6 +575,7 @@ export class World
 						this.mark6.name = 'jibbab'
 						this.graphicsWorld.add(this.mark6);
 						this.marks.push(this.mark6);
+						this.raycasterList.push(this.mark6)
 					}
 					if(child.name == 'hanok'){
 						this.mark7 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -539,6 +585,7 @@ export class World
 						this.mark7.name = 'hanok'
 						this.graphicsWorld.add(this.mark7);
 						this.marks.push(this.mark7);
+						this.raycasterList.push(this.mark7)
 					}
 					if(child.name == 'jumag'){
 						this.mark8 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -548,6 +595,7 @@ export class World
 						this.mark8.name = 'jumag'
 						this.graphicsWorld.add(this.mark8);
 						this.marks.push(this.mark8);
+						this.raycasterList.push(this.mark8)
 					}
 					if(child.name == 'gyeonghoelu'){
 						this.mark9 = new THREE.Mesh(MarkGeometry, MarkMaterial);
@@ -557,7 +605,94 @@ export class World
 						this.mark9.name = 'gyeonghoelu'
 						this.graphicsWorld.add(this.mark9);
 						this.marks.push(this.mark9);
+						this.raycasterList.push(this.mark9)
 					}
+					if(child.name == 'cheomseongdae'){
+						this.mark10 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark10.position.x = child.position.x
+						this.mark10.position.y = child.position.y + 1
+						this.mark10.position.z = child.position.z
+						this.mark10.name = 'cheomseongdae'
+						this.graphicsWorld.add(this.mark10);
+						this.marks.push(this.mark10);
+						this.raycasterList.push(this.mark10)
+					}
+					if(child.name == 'yesul'){
+						this.mark11 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark11.position.x = child.position.x
+						this.mark11.position.y = child.position.y + 2
+						this.mark11.position.z = child.position.z
+						this.mark11.name = 'yesul'
+						this.graphicsWorld.add(this.mark11);
+						this.marks.push(this.mark11);
+						this.raycasterList.push(this.mark11)
+					}
+					if(child.name == 'biff'){
+						this.mark12 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark12.position.x = child.position.x + 5
+						this.mark12.position.y = child.position.y + 2
+						this.mark12.position.z = child.position.z + 1
+						this.mark12.name = 'biff'
+						this.graphicsWorld.add(this.mark12);
+						this.marks.push(this.mark12);
+						this.raycasterList.push(this.mark12)
+					}
+					if(child.name == 'jagalchi'){
+						this.mark13 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark13.position.x = child.position.x + 0.5
+						this.mark13.position.y = child.position.y + 4
+						this.mark13.position.z = child.position.z
+						this.mark13.name = 'jagalchi'
+						this.graphicsWorld.add(this.mark13);
+						this.marks.push(this.mark13);
+						this.raycasterList.push(this.mark13)
+					}
+					if(child.name == 'bexco'){
+						this.mark14 = new THREE.Mesh(MarkGeometry, MarkMaterial);
+						this.mark14.position.x = child.position.x + 0.5
+						this.mark14.position.y = child.position.y + 1
+						this.mark14.position.z = child.position.z + 1
+						this.mark14.name = 'bexco'
+						this.graphicsWorld.add(this.mark14);
+						this.marks.push(this.mark14);
+						this.raycasterList.push(this.mark14)
+
+						const infoText = 'BEXCO is an abbreviation of Busan Exhibition & Convention Center and is located in U-dong, Haeundae-gu, Busan Gwayeong-si\n'
+						+ 'Opened in May 2001, BEXCO has been holding exhibition events of various sizes and characteristics,\n'
+						+ 'from mammoth-level international exhibitions and international conferences to events\n'
+						+ 'such as small and medium-sized conferences and corporate events';  
+						const infoGeometry = new THREE.TextGeometry(infoText, {
+							font: font,
+							size: 0.2,  
+		
+							height: 0.01,  
+		
+							curveSegments: 12,  
+		
+							bevelEnabled: true,  
+							bevelThickness: 0.03,  
+		
+							bevelSize: 0.03,  
+		
+							bevelSegments: 5,  
+		
+							});
+
+					
+						const infoMaterial = new THREE.MeshPhongMaterial({ color: 'skyblue' });
+
+						this.info14 = new THREE.Mesh(infoGeometry, infoMaterial);
+						this.info14.position.x = child.position.x - 3
+						this.info14.position.y = child.position.y + 1
+						this.info14.position.z = child.position.z + 1
+						this.info14.rotation.y -= 0.7
+						this.info14.name = 'bexcoInfo'
+						this.infos.push(this.info14);
+						this.raycasterList.push(this.info14)
+
+						
+					}
+
 					
 					// this.graphicsWorld.add(mark);
 					console.log('Added mark of ', child);
