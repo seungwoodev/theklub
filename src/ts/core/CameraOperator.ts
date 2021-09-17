@@ -44,7 +44,7 @@ export class CameraOperator implements IInputReceiver, IUpdatable
 		this.movementSpeed = 0.06;
 		this.radius = 3;
 		this.theta = 0;
-		this.phi = 0;
+		this.phi = 70; //phi제한
 
 		this.onMouseDownPosition = new THREE.Vector2();
 		this.onMouseDownTheta = this.theta;
@@ -100,11 +100,20 @@ export class CameraOperator implements IInputReceiver, IUpdatable
 		{
 			this.radius = THREE.MathUtils.lerp(this.radius, this.targetRadius, 0.1);
 	
-			this.camera.position.x = this.target.x + this.radius * Math.sin(this.theta * Math.PI / 180) * Math.cos(this.phi * Math.PI / 180);
-			this.camera.position.y = this.target.y + this.radius * Math.sin(this.phi * Math.PI / 180);
-			this.camera.position.z = this.target.z + this.radius * Math.cos(this.theta * Math.PI / 180) * Math.cos(this.phi * Math.PI / 180);
+			this.camera.position.x = this.target.x + 5*this.radius * Math.sin(this.theta * Math.PI / 180) * Math.cos(this.phi * Math.PI / 180);
+			this.camera.position.y = this.target.y + 5*this.radius * Math.sin(this.phi * Math.PI / 180);
+			this.camera.position.z = this.target.z + 5*this.radius * Math.cos(this.theta * Math.PI / 180) * Math.cos(this.phi * Math.PI / 180);
 			this.camera.updateMatrix();
-			this.camera.lookAt(this.target);
+			let newlook = new THREE.Vector3(0,0,0);
+			newlook.x = this.camera.position.x - this.target.x;
+			newlook.z = this.camera.position.z - this.target.z;
+			newlook.normalize().multiplyScalar(-4);
+
+			// let newOffset = new THREE.Vector3().addVectors
+			
+			// this.camera.lookAt(this.target);
+			this.camera.lookAt(new THREE.Vector3().addVectors(this.target,newlook));
+
 		}
 	}
 

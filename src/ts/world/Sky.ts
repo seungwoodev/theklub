@@ -59,7 +59,7 @@ export class Sky extends THREE.Object3D implements IUpdatable
 		// Ambient light
 		this.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1.0 );
 		this.refreshHemiIntensity();
-		this.hemiLight.color.setHSL( 0.59, 0.4, 0.6 );
+		this.hemiLight.color.setHSL( 0.59, 0.4, 0.2 );
 		this.hemiLight.groundColor.setHSL( 0.095, 0.2, 0.75 );
 		this.hemiLight.position.set( 0, 50, 0 );
 		this.world.graphicsWorld.add( this.hemiLight );
@@ -90,7 +90,7 @@ export class Sky extends THREE.Object3D implements IUpdatable
 		this.csm = new CSM({
 			fov: 80,
 			far: 250,	// maxFar
-			lightIntensity: 2.5,
+			lightIntensity: 1,
 			cascades: 3,
 			shadowMapSize: 2048,
 			camera: world.camera,
@@ -98,7 +98,7 @@ export class Sky extends THREE.Object3D implements IUpdatable
 			mode: 'custom',
 			customSplitsCallback: splitsCallback
 		});
-		this.csm.fade = true;
+		this.csm.fade = false;
 
 		this.refreshSunPosition();
 		
