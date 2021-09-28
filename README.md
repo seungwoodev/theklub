@@ -38,6 +38,7 @@ https://www.youtube.com/watch?v=hU95kACbj_0&t=1s
 
 This Application contains copyrighted software under MIT License.
 - Sketchbook
+
 MIT License
 
 Copyright (c) 2020 swift502
