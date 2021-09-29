@@ -4,7 +4,7 @@
 ## usage
 * download or clone the project
 * check if Node.js and npm is installed by $ node -v & npm -v
-* if not, download from https://nodejs.org/ko/download/
+* if not, download from https://nodejs.org/en/download/
 * open project's root folder
 * $ npm i
 * $ npm run dev
