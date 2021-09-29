@@ -9,7 +9,8 @@
 * $ npm i
 * $ npm run dev
 * open localhost:8080 on your web browser (Tested on Chrome, Firefox, Microsoft Edge)
-
+## caution
+### if world.glb is not included, please contact via seungwoodev@gmail.com
 ## development environment
 
 ### Programming Languages
