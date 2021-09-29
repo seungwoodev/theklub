@@ -1,7 +1,7 @@
 # The Klub
 * Metaverse 3D web platform where you can experience Korean culture
 
-## usage
+## Usage
 * download or clone the project
 * check if Node.js and npm is installed by $ node -v & npm -v
 * if not, download from https://nodejs.org/en/download/
@@ -10,7 +10,7 @@
 * $ npm run dev
 * open localhost:8080 on your web browser (Tested on Chrome, Firefox, Microsoft Edge)
 * if build/assets/world.glb is not included, the project won't work. Please contact via seungwoodev@gmail.com
-## development environment
+## Development environment
 
 ### Programming Languages
 
