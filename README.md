@@ -34,7 +34,7 @@
 
 https://www.youtube.com/watch?v=hU95kACbj_0&t=1s
 
-## Open Source Library Announcement
+## Open Source Announcement
 
 This Application contains copyrighted software under MIT License.
 ### Sketchbook
