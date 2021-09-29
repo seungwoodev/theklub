@@ -1,5 +1,5 @@
 # The Klub
-* Metaverse 3D web platform where you can experience Korean culture and get knowledge about them
+Metaverse 3D web platform where you can experience Korean culture and get knowledge about them
 
 ## Usage
 * download or clone the project
