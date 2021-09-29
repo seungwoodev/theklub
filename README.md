@@ -30,9 +30,9 @@
 ## Play Screenshot
 
 ![1](https://user-images.githubusercontent.com/65812107/135170567-74b1febd-607e-4404-b3e0-942634ab2670.PNG)
-![ezgif-3-f42ecbd8b6e4](https://user-images.githubusercontent.com/65812107/135194008-1d5e5591-1636-4bfd-a3dc-27693adc6d7e.gif)
-![2](https://user-images.githubusercontent.com/65812107/135170572-04b43b92-93df-49fa-8f92-8db689e5e5fa.PNG)
 ![ezgif-3-b829a95cd2a2](https://user-images.githubusercontent.com/65812107/135194101-e3ff227c-772e-4a55-abce-ac6f285f3028.gif)
+![2](https://user-images.githubusercontent.com/65812107/135170572-04b43b92-93df-49fa-8f92-8db689e5e5fa.PNG)
+![ezgif-3-f42ecbd8b6e4](https://user-images.githubusercontent.com/65812107/135194008-1d5e5591-1636-4bfd-a3dc-27693adc6d7e.gif)
 
 
 
