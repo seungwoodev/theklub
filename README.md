@@ -9,7 +9,7 @@
 * $ npm i
 * $ npm run dev
 * open localhost:8080 on your web browser (Tested on Chrome, Firefox, Microsoft Edge)
-* if build/assets/world.glb is not included, the project won't be work. Please contact via seungwoodev@gmail.com
+* if build/assets/world.glb is not included, the project won't work. Please contact via seungwoodev@gmail.com
 ## development environment
 
 ### Programming Languages
